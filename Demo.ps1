@@ -313,6 +313,43 @@ Set-ServicePrincipalAppRoleAssignmentRequired -AccessToken $token -ObjectId $Web
 
 #endregion
 
+#region DemoScenario1
+
+############################################################
+#################  Script with secret
+############################################################
+
+
+
+$DisplayName = "DemoScenario1"
+
+#Check Templates/DemoScenario1.ps1
+#Re-generate the script to avoid legacy copy/paste.
+. .\src\Convert-SettingsToJson.ps1
+Convert-SettingsToJson -DisplayNAme $DisplayName -OutputFolder ".\Output"
+
+$token = "Bearer {0}" -f (Get-AzAccessToken -ResourceUrl "https://graph.microsoft.com/").Token
+
+#Build App registration
+$DemoScenario1AppRegistration = New-AppRegistration -AccessToken $token -ConfigFilePath ".\Output\$DisplayName.json" -ConfidentialApp
+# Create a secret automatically (valid 2 years)
+$DemoScenario1AppRegistrationCreds = Add-AppRegistrationPassword -AccessToken $token -ObjectId $DemoScenario1AppRegistration.Id
+# Create a SP from this App registration
+$DemoScenario1ServicePrincipal = New-ServicePrincipal -AccessToken $token -AppId $DemoScenario1AppRegistration.appId
+
+# Let's now add our logo
+Add-AppRegistrationLogo -AccessToken $token -ObjectId $DemoScenario1AppRegistration.Id -LogoPath ".\ScomNewbie_logo.png"
+# And make sure our app is not available for everyone in our tenant 
+#Set-ServicePrincipalAppRoleAssignmentRequired -AccessToken $token -ObjectId $WebApp01ServicePrincipal.Id
+
+# Open the portal and verify all attributes
+
+############################################################
+############################################################
+############################################################
+
+#endregion
+
 # Clean the demo
 
 Remove-AppRegistration -AccessToken $token -ObjectId $CLIWayObjectId
@@ -321,4 +358,5 @@ Remove-AppRegistration -AccessToken $token -ObjectId $Desktop01AppRegistration.I
 Remove-AppRegistration -AccessToken $token -ObjectId $Desktop02AppRegistration.Id
 Remove-AppRegistration -AccessToken $token -ObjectId $SPA01NewServicePrincipal.Id
 Remove-AppRegistration -AccessToken $token -ObjectId $WebApp01AppRegistration.Id
+Remove-AppRegistration -AccessToken $token -ObjectId $DemoScenario1AppRegistration.Id
 az group delete -n $RGName -y

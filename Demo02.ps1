@@ -16,6 +16,7 @@ In this demo, we will do:
 - Single tenant (internal pre-requisite)
 #>
 
+Import-Module .\PSAADApplication.psd1
 
 # Declare variables
 [GUID]$TenantID = Read-host "What is your tenant Id?"

@@ -16,6 +16,9 @@ In this demo, we will do:
 
 #>
 
+Import-Module .\PSAADApplication.psd1
+
+
 # Declare variables
 [GUID]$TenantID = Read-host "What is your tenant Id?"
 [GUID]$SubId = Read-host "What is your subscription Id?"

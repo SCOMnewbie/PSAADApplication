@@ -7,7 +7,7 @@ A Powershell module to create and manage Azure AD app registration or enterprise
 # The module is not located on the PS gallery. You have to copy it manually.
 
 ```powershell
-Install-Module -Name PSAADApplication
+Import-Module .\PSAADApplication.psd1
 ```
 
 ## Disclaimer

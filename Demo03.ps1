@@ -6,8 +6,6 @@
 <#
 Now that we know how to create an app, let's create a frontend which will be allowed to communicate with a backend application to read company's email in application context.
 
-TBD
-
 Here we will create 2 applications:
 - We start by the backend one
     - No redirect(authentication), the API will validate the token
@@ -19,6 +17,8 @@ Here we will create 2 applications:
         - Trust the public App (Why not)
 - Create a public App related to this backend API
 #>
+
+Import-Module .\PSAADApplication.psd1
 
 # Declare variables
 [GUID]$TenantID = Read-host "What is your tenant Id?"

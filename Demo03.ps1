@@ -1,6 +1,13 @@
-#Throw "no F5, this is a demo"
+############################################################
+#################  FrontEnd + Backend App
+############################################################
+
 
 <#
+Now that we know how to create an app, let's create a frontend which will be allowed to communicate with a backend application to read company's email in application context.
+
+TBD
+
 Here we will create 2 applications:
 - We start by the backend one
     - No redirect(authentication), the API will validate the token
@@ -13,42 +20,20 @@ Here we will create 2 applications:
 - Create a public App related to this backend API
 #>
 
+# Declare variables
 [GUID]$TenantID = Read-host "What is your tenant Id?"
 [GUID]$SubId = Read-host "What is your subscription Id?"
-[string]$RGName = Read-host "What is your resource group name?"   # Use to assign roles for the demo, we will remove it at the end of the demo
 
-
-
-$Scope = "/subscriptions/$SubId/resourceGroups/$RGName" # Make sure it's created
-
-#Load functions in memory
-$Functions = @( Get-ChildItem -Path ".\src\*.ps1" -ErrorAction SilentlyContinue )
-Foreach ($Function in $Functions) {
-    Try {
-         . $Function.fullname
-    }
-    catch{
-        Write-Error "Unable to load functions"
-    }
-}
-
-$Functions.count
-
-#Backend
-
-#$DisplayName = "DemoBackend02"
-
-#Template to paste
-
+#Declare your backend settings
 $BackendSettings = @{
-    displayName            = "DemoBackend06"
+    displayName            = "DemoBackend01"
     requiredResourceAccess = @(
         @{
             resourceAppId  = "00000003-0000-0000-c000-000000000000" #well know graph API
             resourceAccess = @(
                 @{
                     id   = "693c5e45-0940-467d-9b8a-1022fb9d42ef" # Role means application mails.readbasic
-                    type = "Role"
+                    type = "Role" # Other choice is scope = deleguated, Role means application delegation
                 }
             )
         }
@@ -70,8 +55,10 @@ $BackendSettings = @{
 }
 
 
-#. .\src\Convert-SettingsToJson.ps1
-$BackendSettingInJson = Convert-SettingsToJson -TemplateSettings $BackendSettings -Verbose
+#Don't forget to switch your context again :)
+#Connect-AzAccount
+
+$BackendSettingInJson = Convert-SettingsToJson -TemplateSettings $BackendSettings
 
 $token = "Bearer {0}" -f (Get-AzAccessToken -ResourceUrl "https://graph.microsoft.com/").Token
 
@@ -80,23 +67,24 @@ $BackendAppRegistration = New-AppRegistration -AccessToken $token -InputWithVari
 
 # Create a secret automatically (valid 2 years)
 $BackendAppRegistrationCreds = Add-AppRegistrationPassword -AccessToken $token -ObjectId $BackendAppRegistration.Id
+
 # Create a SP from this App registration
 $BackendServicePrincipal = New-ServicePrincipal -AccessToken $token -AppId $BackendAppRegistration.appId
+
 # Create the IdentifierUris
 Set-AppRegistrationIdentifierUris -AccessToken $token -ObjectId $BackendAppRegistration.Id -AppId $BackendAppRegistration.AppId
+
 #Now we can create scopes of our custom api
-Set-AppRegistrationoauth2PermissionScopes -AccessToken $token -ObjectId $BackendAppRegistration.Id -InputWithVariable $SettingInJson
+Set-AppRegistrationoauth2PermissionScopes -AccessToken $token -ObjectId $BackendAppRegistration.Id -InputWithVariable $BackendSettingInJson
 
+# Now we have a new backend app with an exposed api generated with random Id. We need to get this value to give it to the Public App !
 # Get the scopeIDInfo
+$ScopeInfo = Get-APIScopesInfo -AccessToken $token -AppId $BackendAppRegistration.AppId -Deleguated #Because our exposed api is in delegated permission
 
-$ScopeInfo = Get-GraphAPIScopesInfo -AccessToken $token -AppId $BackendAppRegistration.AppId -Deleguated
-
-# Create the public app
-
-#Relace with your value
+# Create the public app (Relace with your value for the displayname)
 
 $DesktopSettings = @{
-    displayName = 'DemoDesktop06'
+    displayName = 'DemoFrontEnd01'
     publicClient = @{
         redirectUris= @(
             "https://login.microsoftonline.com/common/oauth2/nativeclient"  # Array here can have multiple values

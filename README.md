@@ -6,11 +6,10 @@ Creating an application in AAD as always been a “funny” topic. Why Terraform
 
 ## How to use this repo
 
+**You can find the "compiled" module (psd1 and psm1) in the PSAADApplication folder.**
+
 There is 2 main things to keep in mind:
 
-- The demo.ps1 is what we will use for our demo. The demo will be cleaned at the end of the script.
-- Between applications (RBAC/Desktop/SPA/...), we still have to copy/paste $settings from Templates/xxx to Convert-SettingsToJson.ps1 between the apps. It's not optimal, but I didn't found a smart way way to generate the "compiled" json on the fly.
-
-Note: I've tried to expose lot of possibilities in the templates. The idea here is for you to create your own template based on pieces located in various examples.
-
-Note2: Get-GraphAPIScopesInfo can be used to extract from graph api itself the ID of the specifc scopes you need in your future application.
+- The Demo01, 02, 03 will help you to use this module
+- Between various applications types (RBAC/Desktop/SPA/...), and the douzens of options, you can read also the files in the Templates folder to understand all the available options to configure your applications.
+- The APIScopesInfo cmdlet is useful when you have to list exposed apis from Graph or your app registration. I use it during the demo03 to get the auto generated ID that has been generated when I exposed an API from my backend application.

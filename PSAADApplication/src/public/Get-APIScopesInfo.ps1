@@ -1,4 +1,4 @@
-﻿Function Get-GraphAPIScopesInfo {
+﻿Function Get-APIScopesInfo {
     <#
     .SYNOPSIS
     This function will return either delegated or applications available scopes  for the Graph API app.
@@ -20,14 +20,19 @@
     Specify you look for application permissions
 
     .EXAMPLE
-    PS> Get-GraphAPIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Deleguated
+    PS> Get-APIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Deleguated
 
     "Will return all available scopes with the word group in both value and description with delegated permission."
 
     .EXAMPLE
-    PS> Get-GraphAPIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Application
+    PS> Get-APIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Application
     
     "Will return all available scopes with the word group in both value and description with application permission."
+
+    .EXAMPLE
+    PS> Get-APIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Application -AppId f6eb2883-3454-4520-860c-222f796bd929
+    
+    "Will return all available scopes from your app Id"
 
     .NOTES
     VERSION HISTORY

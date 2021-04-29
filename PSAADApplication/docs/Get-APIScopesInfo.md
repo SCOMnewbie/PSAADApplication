@@ -5,7 +5,7 @@ online version: https://docs.microsoft.com/en-us/graph/api/application-addpasswo
 schema: 2.0.0
 ---
 
-# Get-GraphAPIScopesInfo
+# Get-APIScopesInfo
 
 ## SYNOPSIS
 This function will return either delegated or applications available scopes  for the Graph API app.
@@ -14,13 +14,13 @@ This function will return either delegated or applications available scopes  for
 
 ### Application
 ```
-Get-GraphAPIScopesInfo -AccessToken <String> [-ScopeKeyword <String>] [-Application] [-AppId <String>]
+Get-APIScopesInfo -AccessToken <String> [-ScopeKeyword <String>] [-Application] [-AppId <String>]
  [<CommonParameters>]
 ```
 
 ### Deleguated
 ```
-Get-GraphAPIScopesInfo -AccessToken <String> [-ScopeKeyword <String>] [-Deleguated] [-AppId <String>]
+Get-APIScopesInfo -AccessToken <String> [-ScopeKeyword <String>] [-Deleguated] [-AppId <String>]
  [<CommonParameters>]
 ```
 
@@ -34,14 +34,14 @@ You can extract from this cmdlet the required Id.
 
 ### EXAMPLE 1
 ```
-Get-GraphAPIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Deleguated
+Get-APIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Deleguated
 ```
 
 "Will return all available scopes with the word group in both value and description with delegated permission."
 
 ### EXAMPLE 2
 ```
-Get-GraphAPIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Application
+Get-APIScopesInfo -AccessToken "Bearrer ..." -ScopeKeyword "group" -Application
 ```
 
 "Will return all available scopes with the word group in both value and description with application permission."

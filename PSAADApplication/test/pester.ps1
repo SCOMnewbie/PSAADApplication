@@ -1,4 +1,6 @@
-#Big thank you to Friedrich Weinmann who is the person behind this code.
+#####################
+# Big thank you to Friedrich Weinmann who is the person behind all this test workflow.
+#########################
 param (
 	$TestGeneral = $true,
 	$TestFunctions = $true,
